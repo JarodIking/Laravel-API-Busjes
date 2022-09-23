@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Resources\rentersCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RentersController;
+use App\Http\Resources\rentersResource;
+use App\models\renters;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,10 +18,11 @@ use App\Http\Controllers\RentersController;
 */
 
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
+//get all renting companies
+Route::get('/renters/all', function () {
+    return new rentersCollection(renters::all());
+});
 
-
-Route::apiResource('renters', RentersController::class);
-
+Route::get('/renters/{id}', function ($id) {
+    return new rentersResource(renters::findOrFail($id));
+});

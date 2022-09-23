@@ -15,11 +15,16 @@ class renterSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('renters')->insert(
-            [
-                'renter_name' => "hertz",
-                'website' => "www.hertz.com"
-            ],
+        DB::table('renters')->insert([
+                [
+                    'renter_name' => "hertz",
+                    'website' => "www.hertz.com"
+                ],
+                [
+                    'renter_name' => "Ad-rem",
+                    'website' => "www.adrem.com"
+                ],
+            ]
         );
     }
 }
