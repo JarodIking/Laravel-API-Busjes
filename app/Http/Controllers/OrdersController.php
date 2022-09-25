@@ -34,9 +34,9 @@ class OrdersController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request, Vehicles $vehicles)
+    public function store(Request $request, Orders $orders, Vehicles $vehicles)
     {
         $vehicle = $vehicles->findOrFail($request->get('vehicle_id'));
 
@@ -50,18 +50,19 @@ class OrdersController extends Controller
 
         // calculate total price
         // (≈km * km_price) + (day * daily_price)
-        $newOrder = new Orders([
+        $orders->uuid = $uuid;
+        $orders->vehicle_id = $request->get('vehicle_id');
+        $orders->chosen_volume = $request->get('chosen_volume');
+        $orders->days = $request->get('days');
+        $orders->kilometers = $request->get('kilometers');
+        $orders->total_price = (round($request->get('kilometers') * $vehicle->km_price) + ($request->get('days') * $vehicle->daily_price));
+
+        $orders->save();
+
+        return response()->json([
             'uuid' => $uuid,
-            'vehicle_id' => $request->get('vehicle_id'),
-            'chosen_volume' => $request->get('chosen_volume'),
-            'days' => $request->get('days'),
-            'kilometers' => $request->get('kilometers'),
-            'total_price' => (round($request->get('kilometers') * $vehicle->km_price) + ($request->get('days') * $vehicle->daily_price)),
+            'message' => "Order has been created, use the uuid to interact with your order",
         ]);
-
-        $newOrder->save();
-
-        return response($uuid);
     }
 
     /**
@@ -91,11 +92,30 @@ class OrdersController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Orders  $orders
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Orders $orders)
+    public function update(Request $request, Orders $orders, Vehicles $vehicles, $uuid)
     {
-        //
+        $order = $orders->findOrFail($uuid);
+        $vehicle = $vehicles->findOrFail($request->get('vehicle_id'));
+
+        if ($request->get('chosen_volume') > $vehicle->volume_max)
+        {
+            return response('chosen volume greater vehicle capacity');
+        }
+
+        $order->vehicle_id = $request->get('vehicle_id');
+        $order->chosen_volume = $request->get('chosen_volume');
+        $order->days = $request->get('days');
+        $order->kilometers = $request->get('kilometers');
+        $order->total_price = (round($request->get('kilometers') * $vehicle->km_price) + ($request->get('days') * $vehicle->daily_price));
+
+        $order->save();
+
+        return response()->json([
+            'uuid' => $uuid,
+            'message' => "order has been updated",
+        ]);
     }
 
     /**
@@ -104,8 +124,10 @@ class OrdersController extends Controller
      * @param  \App\Models\Orders  $orders
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Orders $orders)
+    public function destroy(Orders $orders, $uuid)
     {
-        //
+        $orders->findOrFail($uuid)->delete();
+
+        return response("order has been removed");
     }
 }
