@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Resources\rentersCollection;
+use App\Http\Resources\VehiclesCollection;
+use App\Models\Vehicles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\rentersResource;
@@ -26,3 +28,12 @@ Route::get('/renters/all', function () {
 Route::get('/renters/{id}', function ($id) {
     return new rentersResource(renters::findOrFail($id));
 });
+
+
+
+//get all vehicles
+Route::get('/vehicles/all', function () {
+    return new VehiclesCollection(Vehicles::all());
+});
+
+

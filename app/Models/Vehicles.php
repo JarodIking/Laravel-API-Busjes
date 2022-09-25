@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class renters extends Model
+class Vehicles extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class renters extends Model
      *
      * @var string
      */
-    protected $table = 'renters';
+    protected $table = 'vehicles';
 
     /**
      * The primary key associated with the table.
@@ -29,4 +29,5 @@ class renters extends Model
      * @var bool
      */
     public $incrementing = true;
+
 }

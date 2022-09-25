@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,10 +14,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('renters', function (Blueprint $table) {
+        Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->char('renter_name', 50);
-            $table->char('website', 200);
+            $table->unsignedBigInteger('renter_id');
+            $table->char('vehicle_name', 100);
+            $table->integer('volume_max');
+            $table->double('daily_price');
+            $table->double('km_price');
+
+            $table->foreign('renter_id')->references('id')->on('renters');
+
         });
     }
 
@@ -28,7 +35,7 @@ return new class extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('renters');
+        Schema::dropIfExists('vehicles');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 };
