@@ -24,6 +24,8 @@ Route::apiResource('renters', rentersController::class);
 Route::apiResource('vehicles', VehiclesController::class);
 
 //order routes
-Route::apiResource('orders', OrdersController::class);
+Route::apiResource('orders', OrdersController::class)->except([
+    'index',
+]);
 
 

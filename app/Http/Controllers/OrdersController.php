@@ -6,6 +6,7 @@ use App\Models\Orders;
 use App\Models\Vehicles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class OrdersController extends Controller
 {
@@ -44,9 +45,13 @@ class OrdersController extends Controller
             return response('chosen volume greater vehicle capacity');
         }
 
+        //generate uuid for customers
+        $uuid = (string) Str::uuid();
+
         // calculate total price
         // (≈km * km_price) + (day * daily_price)
         $newOrder = new Orders([
+            'uuid' => $uuid,
             'vehicle_id' => $request->get('vehicle_id'),
             'chosen_volume' => $request->get('chosen_volume'),
             'days' => $request->get('days'),
@@ -56,6 +61,7 @@ class OrdersController extends Controller
 
         $newOrder->save();
 
+        return response($uuid);
     }
 
     /**
@@ -64,9 +70,9 @@ class OrdersController extends Controller
      * @param  \App\Models\Orders  $orders
      * @return \Illuminate\Http\Response
      */
-    public function show(Orders $orders)
+    public function show(Orders $orders, $uuid)
     {
-        //
+        return response()->json($orders->findOrFail($uuid));
     }
 
     /**

@@ -21,14 +21,14 @@ class Orders extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'uuid';
 
     /**
      * Indicates if the model's ID is auto-incrementing.
      *
      * @var bool
      */
-    public $incrementing = true;
+    public $incrementing = false;
 
     /**
      * Indicates timestamps.
@@ -43,6 +43,7 @@ class Orders extends Model
      *
      */
     protected $fillable = [
+        'uuid',
         'vehicle_id',
         'chosen_volume',
         'days',

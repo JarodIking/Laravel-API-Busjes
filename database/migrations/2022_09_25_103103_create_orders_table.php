@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('uuid');
             $table->unsignedBigInteger('vehicle_id');
             $table->integer('chosen_volume');
             $table->double('days');
