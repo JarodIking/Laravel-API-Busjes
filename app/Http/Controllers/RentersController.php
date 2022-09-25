@@ -44,9 +44,9 @@ class RentersController extends Controller
      * @param  \App\Models\renters  $renters
      * @return \Illuminate\Http\Response
      */
-    public function show(renters $renters)
+    public function show(renters $renters, int $id)
     {
-        //
+        return response()->json($renters->findOrFail($id));
     }
 
     /**

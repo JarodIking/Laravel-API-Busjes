@@ -1,12 +1,10 @@
 <?php
 
-use App\Http\Resources\rentersCollection;
-use App\Http\Resources\VehiclesCollection;
-use App\Models\Vehicles;
+use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\RentersController;
+use App\Http\Controllers\VehiclesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Resources\rentersResource;
-use App\models\renters;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,21 +17,13 @@ use App\models\renters;
 |
 */
 
+//renter routes
+Route::apiResource('renters', rentersController::class);
 
-//get all renting companies
-Route::get('/renters/all', function () {
-    return new rentersCollection(renters::all());
-});
+//vehicle routes
+Route::apiResource('vehicles', VehiclesController::class);
 
-Route::get('/renters/{id}', function ($id) {
-    return new rentersResource(renters::findOrFail($id));
-});
-
-
-
-//get all vehicles
-Route::get('/vehicles/all', function () {
-    return new VehiclesCollection(Vehicles::all());
-});
+//order routes
+Route::apiResource('orders', OrdersController::class);
 
 

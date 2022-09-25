@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vehicles;
 use Illuminate\Http\Request;
 
-class VechiclesController extends Controller
+class VehiclesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class VechiclesController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Vehicles::all()->sortBy('daily_price')->values());
     }
 
     /**
